@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Body Bloom">
+<meta name="theme-color" content="#C9908A">
+<meta name="description" content="Jouw persoonlijke mindfulness werkboek — Body Bloom">
+<link rel="manifest" href="/BodyBloom_mindfulness_werkboek/manifest.json">
+<link rel="apple-touch-icon" href="/BodyBloom_mindfulness_werkboek/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/BodyBloom_mindfulness_werkboek/icon-192.png">
+<title>Body Bloom</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --rose:#C9908A;--rose-light:#E8C5C2;--rose-pale:#F5E8E6;
+  --rose-deep:#A06060;--cream:#FAF5F3;--warm-gray:#9E8C8A;
+  --text:#3D2C2A;--text-muted:#8C7170;--moon:#D4A8A0;
+  --infrared:#E07A5F;--infrared-pale:#FAEAE5;--infrared-light:#F2C4B8;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);display:flex;flex-direction:column;}
+
+/* INSTALL BANNER */
+.install-banner{
+  background:var(--rose-deep);color:#fff;
+  padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-size:13px;flex-shrink:0;
+  padding-top:calc(10px + var(--safe-top));
+}
+.install-banner.hidden{display:none;}
+.install-banner-text{line-height:1.4;}
+.install-banner-text strong{display:block;font-size:14px;font-weight:500;}
+.install-btn{padding:7px 16px;background:#fff;color:var(--rose-deep);border:none;border-radius:20px;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.install-dismiss{background:none;border:none;color:rgba(255,255,255,0.7);font-size:20px;cursor:pointer;padding:0 4px;flex-shrink:0;}
+
+/* OFFLINE BADGE */
+.offline-badge{
+  background:#8C7170;color:#fff;text-align:center;
+  font-size:11px;letter-spacing:0.1em;padding:4px;flex-shrink:0;
+  display:none;
+}
+.offline-badge.show{display:block;}
+
+/* TOP NAV */
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;height:54px;
+  border-bottom:1px solid var(--rose-light);background:#fff;
+  flex-shrink:0;position:relative;z-index:50;
+}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--rose-deep);}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-save-indicator{font-size:10px;color:var(--warm-gray);letter-spacing:0.06em;opacity:0;transition:opacity 0.3s;}
+.nav-save-indicator.show{opacity:1;}
+
+/* SCROLLABLE CONTENT */
+.app-body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
+
+/* BOTTOM TAB BAR */
+.tab-bar{
+  display:flex;background:#fff;border-top:1px solid var(--rose-light);
+  flex-shrink:0;
+  padding-bottom:var(--safe-bottom);
+}
+.tab-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:8px 4px;cursor:pointer;transition:all 0.2s;
+  border:none;background:none;font-family:'Jost',sans-serif;
+  -webkit-tap-highlight-color:transparent;
+}
+.tab-item:active{background:var(--rose-pale);}
+.tab-icon{font-size:20px;margin-bottom:2px;line-height:1;}
+.tab-label{font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:var(--warm-gray);transition:color 0.2s;}
+.tab-item.active .tab-label{color:var(--rose-deep);font-weight:500;}
+.tab-dot{width:4px;height:4px;border-radius:50%;background:var(--rose);margin:2px auto 0;opacity:0;}
+.tab-item.active .tab-dot{opacity:1;}
+
+/* PAGES */
+.page{display:none;animation:fadeIn 0.3s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.workbook-page{max-width:680px;margin:0 auto;padding:1.5rem 1.25rem 5rem;}
+
+/* COVER */
+.cover{min-height:calc(100vh - 180px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;text-align:center;position:relative;overflow:hidden;}
+.cover::before{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,var(--rose-pale) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.moon-phases{display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:1.5rem;position:relative;z-index:1;}
+.moon{background:var(--moon);border-radius:50%;}
+.m1{width:7px;height:7px;opacity:0.35;}.m2{width:16px;height:8px;border-radius:8px 8px 0 0;transform:rotate(180deg);opacity:0.45;}.m3{width:26px;height:13px;border-radius:13px 13px 0 0;transform:rotate(180deg);opacity:0.6;}.m4{width:38px;height:38px;opacity:0.82;}.m5{width:26px;height:13px;border-radius:13px 13px 0 0;opacity:0.6;}.m6{width:16px;height:8px;border-radius:8px 8px 0 0;opacity:0.45;}.m7{width:7px;height:7px;opacity:0.35;}
+.cover-eyebrow{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:0.3rem;position:relative;z-index:1;}
+.cover-title{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:var(--rose-deep);line-height:1.05;position:relative;z-index:1;}
+.cover-title em{font-style:italic;}
+.cover-subtitle{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--warm-gray);margin-top:0.4rem;position:relative;z-index:1;}
+.cover-divider{width:40px;height:1px;background:var(--rose-light);margin:1.5rem auto;position:relative;z-index:1;}
+.cover-quote{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--rose);max-width:300px;line-height:1.6;position:relative;z-index:1;}
+.name-field{position:relative;z-index:2;margin-top:1.5rem;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.name-label{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--warm-gray);}
+.name-input{border:none;border-bottom:1.5px solid var(--rose-light);background:transparent;text-align:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--rose-deep);width:240px;padding:5px 4px;outline:none;z-index:2;pointer-events:all;}
+.name-input::placeholder{color:var(--rose-light);}
+.name-input:focus{border-bottom-color:var(--rose);}
+
+/* COMPONENTS */
+.page-header{text-align:center;margin-bottom:2rem;padding-bottom:1.25rem;border-bottom:1px solid var(--rose-pale);}
+.page-tag{font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--warm-gray);display:block;margin-bottom:0.3rem;}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;font-style:italic;color:var(--rose-deep);line-height:1.2;}
+.quote-box{background:var(--rose-pale);border-left:3px solid var(--rose);padding:0.9rem 1.2rem;margin:1.5rem 0;border-radius:0 8px 8px 0;}
+.quote-box p{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--rose-deep);line-height:1.55;}
+.quote-box.ir{background:var(--infrared-pale);border-left-color:var(--infrared);}
+.quote-box.ir p{color:var(--infrared);}
+.section-label{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:0.5rem;margin-top:1.25rem;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--rose-pale);}
+.journal-area{width:100%;border:none;background:transparent;resize:none;font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--text);line-height:2.1;background-image:repeating-linear-gradient(transparent,transparent calc(2.1em - 1px),var(--rose-pale) calc(2.1em - 1px),var(--rose-pale) 2.1em);padding:4px 0;outline:none;min-height:80px;}
+.journal-area::placeholder{color:var(--rose-light);font-style:italic;}
+.mood-grid{display:flex;gap:6px;margin:0.6rem 0;flex-wrap:wrap;}
+.mood-btn{flex:1;min-width:60px;padding:8px 4px;border:1px solid var(--rose-pale);border-radius:8px;background:#fff;cursor:pointer;text-align:center;transition:all 0.2s;}
+.mood-btn.selected{border-color:var(--rose);background:var(--rose-pale);}
+.mood-icon{font-size:18px;display:block;margin-bottom:2px;}
+.mood-label{font-size:9px;color:var(--text-muted);}
+.check-grid{display:flex;flex-wrap:wrap;gap:7px;margin:0.5rem 0;}
+.check-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);cursor:pointer;padding:4px 0;}
+.check-box{width:16px;height:16px;border:1px solid var(--rose-light);border-radius:3px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;}
+.check-item.checked .check-box{background:var(--rose);border-color:var(--rose);}
+.check-item.checked .check-box::after{content:'✓';color:white;font-size:10px;}
+.energy-slider{width:100%;appearance:none;height:3px;background:linear-gradient(to right,var(--rose-light),var(--rose-deep));border-radius:2px;outline:none;margin:0.6rem 0 0.3rem;}
+.energy-slider::-webkit-slider-thumb{appearance:none;width:20px;height:20px;border-radius:50%;background:var(--rose-deep);cursor:pointer;border:2px solid white;box-shadow:0 1px 6px rgba(160,96,96,0.35);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:1.5rem;}
+.save-btn{display:inline-flex;align-items:center;gap:5px;padding:10px 20px;background:var(--rose-pale);border:1px solid var(--rose-light);border-radius:24px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--rose-deep);cursor:pointer;transition:all 0.2s;}
+.save-btn:active{transform:scale(0.97);}
+.save-btn.ir-btn{background:var(--infrared-pale);border-color:var(--infrared-light);color:var(--infrared);}
+.save-btn.dark{background:var(--rose-deep);border-color:var(--rose-deep);color:#fff;}
+
+/* BODY SCAN */
+.body-zone{cursor:pointer;}
+.body-zone rect,.body-zone ellipse{transition:fill 0.2s;}
+.body-zone.active rect,.body-zone.active ellipse{fill:var(--rose);}
+.zone-info{background:#fff;border:1px solid var(--rose-pale);border-radius:10px;padding:0.9rem 1.1rem;margin-top:0.75rem;min-height:54px;}
+.zone-title{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--rose-deep);margin-bottom:0.3rem;}
+.zone-desc{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--text-muted);line-height:1.5;}
+.scan-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0.75rem 0;}
+.scan-card{background:#fff;border:1px solid var(--rose-pale);border-radius:8px;padding:0.7rem 0.85rem;}
+.scan-card-label{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:5px;}
+.tension-bar{height:4px;background:var(--rose-pale);border-radius:2px;cursor:pointer;margin:5px 0;}
+.tension-fill{height:100%;border-radius:2px;background:linear-gradient(to right,var(--rose-light),var(--rose-deep));transition:width 0.15s;}
+
+/* INFRARED CAL */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;}
+.cal-nav-btn{width:34px;height:34px;border:1px solid var(--rose-light);border-radius:50%;background:#fff;color:var(--rose-deep);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.cal-nav-btn:disabled{opacity:0.3;}
+.cal-month-lbl{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--rose-deep);text-align:center;}
+.cal-year-lbl{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--warm-gray);text-align:center;}
+.cal-hdr{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px;}
+.cal-hdr span{font-size:9px;text-transform:uppercase;color:var(--warm-gray);text-align:center;padding:3px 0;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-day{height:38px;border:1px solid var(--rose-pale);border-radius:6px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text-muted);cursor:pointer;transition:all 0.15s;position:relative;}
+.cal-day:active{transform:scale(0.93);}
+.cal-day.today{border-color:var(--rose);background:var(--rose-pale);color:var(--rose-deep);font-weight:500;}
+.cal-day.has-session{background:var(--infrared);border-color:var(--infrared);color:#fff;}
+.cal-day.empty{border:none;background:transparent;cursor:default;}
+
+/* INFRARED rest */
+.session-hdr{display:flex;align-items:center;gap:0.75rem;background:var(--infrared-pale);border-radius:10px;padding:1rem;margin-bottom:1.25rem;}
+.ir-icon{width:44px;height:44px;border-radius:50%;background:var(--infrared-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ir-session-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--infrared);}
+.ir-session-sub{font-size:11px;color:var(--warm-gray);}
+.temp-selector{display:flex;gap:6px;margin:0.6rem 0;flex-wrap:wrap;}
+.temp-btn{padding:6px 12px;border:1px solid var(--infrared-light);border-radius:18px;background:#fff;font-size:12px;color:var(--infrared);cursor:pointer;transition:all 0.2s;}
+.temp-btn:active{transform:scale(0.95);}
+.temp-btn.selected{background:var(--infrared);color:#fff;}
+.duration-slider{width:100%;appearance:none;height:3px;background:linear-gradient(to right,var(--infrared-light),var(--infrared));border-radius:2px;outline:none;margin:0.6rem 0 0.3rem;}
+.duration-slider::-webkit-slider-thumb{appearance:none;width:20px;height:20px;border-radius:50%;background:var(--infrared);cursor:pointer;border:2px solid white;}
+.before-after{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0.75rem 0;}
+.ba-card{background:#fff;border:1px solid var(--rose-pale);border-radius:8px;padding:0.85rem;}
+.ba-label{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:6px;}
+.benefit-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0.6rem 0;}
+.benefit-card{background:#fff;border:1px solid var(--rose-pale);border-radius:8px;padding:0.65rem;text-align:center;cursor:pointer;transition:all 0.2s;}
+.benefit-card:active{transform:scale(0.96);}
+.benefit-card.selected{border-color:var(--infrared);background:var(--infrared-pale);}
+.benefit-icon{font-size:18px;display:block;margin-bottom:3px;}
+.benefit-name{font-size:10px;color:var(--text-muted);}
+.benefit-card.selected .benefit-name{color:var(--infrared);}
+
+/* IKIGAI */
+.ikigai-questions{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0;}
+.ikigai-card{background:#fff;border:1px solid var(--rose-pale);border-radius:10px;padding:0.9rem;}
+.ikigai-card-title{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:0.5rem;}
+
+/* WEEK */
+.week-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.week-nav-btn{width:34px;height:34px;border:1px solid var(--rose-light);border-radius:50%;background:#fff;color:var(--rose-deep);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;}
+.week-lbl{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--rose-deep);text-align:center;}
+.week-sub{font-size:10px;color:var(--warm-gray);text-align:center;margin-top:2px;}
+.day-tabs{display:flex;gap:3px;margin-bottom:1.25rem;overflow-x:auto;padding-bottom:3px;}
+.day-tab{flex-shrink:0;padding:5px 12px;border:1px solid var(--rose-pale);border-radius:18px;background:#fff;font-size:10px;color:var(--text-muted);cursor:pointer;transition:all 0.2s;text-align:center;}
+.day-tab.active{background:var(--rose-pale);border-color:var(--rose);color:var(--rose-deep);font-weight:500;}
+.day-tab.has-data{border-color:var(--rose-light);}
+.day-tab .ddot{width:4px;height:4px;border-radius:50%;background:var(--rose);margin:2px auto 0;display:none;}
+.day-tab.has-data .ddot{display:block;}
+.day-panel{display:none;}
+.day-panel.active{display:block;}
+.day-field{margin-bottom:0.85rem;}
+.day-field label{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm-gray);display:block;margin-bottom:3px;}
+.day-input{width:100%;border:none;border-bottom:1px solid var(--rose-pale);background:transparent;font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--text);padding:3px 0;outline:none;}
+.day-input::placeholder{color:var(--rose-light);}
+.day-input:focus{border-bottom-color:var(--rose);}
+.day-mood-row{display:flex;gap:5px;margin:5px 0;flex-wrap:wrap;}
+.day-mood-btn{padding:4px 9px;border:1px solid var(--rose-pale);border-radius:14px;background:#fff;font-size:11px;cursor:pointer;transition:all 0.2s;}
+.day-mood-btn.selected{background:var(--rose-pale);border-color:var(--rose);}
+.week-summary-box{background:var(--rose-pale);border-radius:10px;padding:1rem;margin-top:1.25rem;}
+.week-sum-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--rose-deep);margin-bottom:0.75rem;}
+.week-day-row{display:flex;gap:8px;margin-bottom:0.5rem;align-items:flex-start;}
+.week-day-name{font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--rose);width:50px;flex-shrink:0;padding-top:2px;}
+.week-day-content{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--text);line-height:1.5;flex:1;}
+.week-day-content.empty{color:var(--rose-light);font-style:italic;}
+
+/* GRATITUDE */
+.grat-day{background:#fff;border:1px solid var(--rose-pale);border-radius:10px;padding:0.9rem 1.1rem;margin-bottom:8px;}
+.grat-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6rem;}
+.grat-date{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--warm-gray);}
+.grat-streak{font-size:11px;color:var(--rose);}
+.grat-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.grat-num{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--rose-light);width:18px;flex-shrink:0;}
+.grat-input{border:none;border-bottom:1px solid var(--rose-pale);background:transparent;font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--text);flex:1;padding:3px 0;outline:none;}
+.grat-input::placeholder{color:var(--rose-light);}
+.grat-input:focus{border-bottom-color:var(--rose);}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(61,44,42,0.55);z-index:200;align-items:flex-end;justify-content:center;padding-bottom:var(--safe-bottom);}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:20px 20px 0 0;padding:1.5rem 1.25rem 2rem;width:100%;max-height:88vh;overflow-y:auto;}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:var(--rose-light);margin:0 auto 1.25rem;}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:var(--rose-deep);margin-bottom:0.3rem;}
+.modal-meta{font-size:11px;color:var(--warm-gray);margin-bottom:1.25rem;}
+.sum-block{margin-bottom:0.9rem;padding-bottom:0.9rem;border-bottom:1px solid var(--rose-pale);}
+.sum-block:last-of-type{border-bottom:none;}
+.sum-tag{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--rose);margin-bottom:3px;}
+.sum-text{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--text);line-height:1.55;font-style:italic;}
+.sum-text.empty{color:var(--rose-light);}
+.modal-footer{background:var(--rose-pale);border-radius:8px;padding:0.9rem;text-align:center;margin-top:0.75rem;}
+.modal-footer p{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:var(--rose-deep);}
+.modal-footer .copy{font-size:10px;color:var(--warm-gray);margin-top:3px;font-style:normal;font-family:'Jost',sans-serif;}
+.modal-actions{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap;}
+.modal-close{padding:8px 16px;border:1px solid var(--rose-light);border-radius:20px;background:none;font-size:11px;color:var(--warm-gray);cursor:pointer;letter-spacing:0.08em;text-transform:uppercase;}
+
+/* SITE FOOTER */
+.site-footer{text-align:center;padding:1.25rem 1rem;border-top:1px solid var(--rose-pale);background:#fff;margin-top:1.5rem;}
+.site-footer p{font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;color:var(--rose-light);}
+.copy-line{font-size:10px;color:var(--warm-gray);margin-top:3px;font-style:normal;font-family:'Jost',sans-serif;}
+
+@media(min-width:600px){
+  .workbook-page{padding:2rem 2rem 6rem;}
+  .page-title{font-size:34px;}
+}
+@media print{
+  .nav,.tab-bar,.install-banner,.offline-badge,.btn-row,.modal-actions,.modal-close{display:none!important;}
+  .modal-overlay{position:static!important;background:none!important;display:block!important;}
+  .modal{box-shadow:none!important;max-height:none!important;border-radius:0;padding:1rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- INSTALL BANNER -->
+<div class="install-banner hidden" id="install-banner">
+  <div class="install-banner-text">
+    <strong>Installeer Body Bloom</strong>
+    Zet de app op je startscherm
+  </div>
+  <button class="install-btn" id="install-btn">Installeer</button>
+  <button class="install-dismiss" onclick="dismissInstall()">×</button>
+</div>
+
+<!-- OFFLINE BADGE -->
+<div class="offline-badge" id="offline-badge">Je bent offline — alles werkt nog gewoon</div>
+
+<!-- TOP NAV -->
+<nav class="nav">
+  <span class="nav-brand">Body Bloom</span>
+  <div class="nav-right">
+    <span class="nav-save-indicator" id="save-indicator">Opgeslagen ✓</span>
+    <button onclick="openDataModal()" style="background:none;border:1px solid var(--rose-light);border-radius:20px;padding:5px 12px;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--warm-gray);cursor:pointer;">Mijn data</button>
+  </div>
+</nav>
+
+<!-- SCROLLABLE APP BODY -->
+<div class="app-body" id="app-body">
+
+  <!-- COVER -->
+  <div id="cover" class="page active">
+    <div class="cover">
+      <div class="moon-phases"><div class="moon m1"></div><div class="moon m2"></div><div class="moon m3"></div><div class="moon m4"></div><div class="moon m5"></div><div class="moon m6"></div><div class="moon m7"></div></div>
+      <p class="cover-eyebrow">Mindfulness Werkboek</p>
+      <h1 class="cover-title">Body <em>Bloom</em></h1>
+      <p class="cover-subtitle">Vind je doel &amp; innerlijke balans</p>
+      <div class="cover-divider"></div>
+      <p class="cover-quote">"Jouw lichaam weet de weg. Vertrouw het. Voel het. Bloei."</p>
+      <div class="name-field">
+        <span class="name-label">Jouw naam</span>
+        <input class="name-input" id="cover-name" type="text" placeholder="schrijf hier jouw naam..." autocomplete="off" oninput="autosave()">
+      </div>
+    </div>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+  </div>
+
+  <!-- OCHTEND -->
+  <div id="morning" class="page">
+    <div class="workbook-page">
+      <div class="page-header"><span class="page-tag">Ochtend Ritual</span><h2 class="page-title">Hoe begin jij jouw dag?</h2></div>
+      <div class="quote-box"><p>"Begin de dag niet met haasten. Begin de dag met adem."</p></div>
+      <div class="section-label">Mijn energie vandaag</div>
+      <div class="mood-grid">
+        <div class="mood-btn" onclick="selectMood(this)"><span class="mood-icon">🌸</span><span class="mood-label">Bloeiend</span></div>
+        <div class="mood-btn" onclick="selectMood(this)"><span class="mood-icon">🌤</span><span class="mood-label">Licht</span></div>
+        <div class="mood-btn" onclick="selectMood(this)"><span class="mood-icon">☁️</span><span class="mood-label">Neutraal</span></div>
+        <div class="mood-btn" onclick="selectMood(this)"><span class="mood-icon">🌧</span><span class="mood-label">Zwaar</span></div>
+        <div class="mood-btn" onclick="selectMood(this)"><span class="mood-icon">⚡</span><span class="mood-label">Intensief</span></div>
+      </div>
+      <div class="section-label">Energielevel (1–10)</div>
+      <input class="energy-slider" type="range" min="1" max="10" value="5" oninput="document.getElementById('ev').textContent=this.value;autosave()">
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--warm-gray);text-transform:uppercase;"><span>Uitgeput</span><span id="ev" style="color:var(--rose-deep);font-weight:500;">5</span><span>Vol energie</span></div>
+      <div class="section-label">Mijn lichaam voelt</div>
+      <textarea id="m-body" class="journal-area" rows="3" placeholder="Wat merk je op in je lichaam vanmorgen?" oninput="autosave()"></textarea>
+      <div class="section-label">Dankbaarheid</div>
+      <textarea id="m-grat" class="journal-area" rows="3" placeholder="3 dingen waar ik dankbaar voor ben..." oninput="autosave()"></textarea>
+      <div class="section-label">Mijn intentie voor vandaag</div>
+      <textarea id="m-int" class="journal-area" rows="2" placeholder="Vandaag kies ik voor..." oninput="autosave()"></textarea>
+      <div class="section-label">Mijn lichaam vraagt nu om</div>
+      <div class="check-grid">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Beweging</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Rust</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Voeding</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Adem</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Verbinding</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Infrarood sessie</span></div>
+      </div>
+      <div class="btn-row">
+        <button class="save-btn" onclick="saveDay();flashSave()">Opslaan ✦</button>
+        <button class="save-btn dark" onclick="openDayPDF()">Dag PDF ↗</button>
+      </div>
+    </div>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+  </div>
+
+  <!-- BODY SCAN -->
+  <div id="bodyscan" class="page">
+    <div class="workbook-page">
+      <div class="page-header"><span class="page-tag">Body Scan</span><h2 class="page-title">Luister naar je lichaam</h2></div>
+      <div class="quote-box"><p>"Je lichaam spreekt altijd. De kunst is leren luisteren."</p></div>
+      <p style="font-size:11px;color:var(--warm-gray);text-align:center;margin-bottom:0.75rem;">Klik op een zone om te voelen wat daar leeft</p>
+      <div style="display:flex;justify-content:center;margin:1.25rem 0;">
+        <svg width="160" height="300" viewBox="0 0 180 340" xmlns="http://www.w3.org/2000/svg">
+          <g class="body-zone" id="zone-head" onclick="selectZone('head')" data-title="Hoofd &amp; Geest" data-desc="Gedachten, spanning in je kaak of voorhoofd, helderheid of waas, innerlijke stem."><ellipse cx="90" cy="38" rx="28" ry="32" fill="#F5E8E6" stroke="#E8C5C2" stroke-width="1.5"/></g>
+          <g class="body-zone" id="zone-neck" onclick="selectZone('neck')" data-title="Nek &amp; Keel" data-desc="Spanning, stijfheid, stem die wil spreken of zwijgt, onuitgesproken woorden."><rect x="78" y="68" width="24" height="22" rx="4" fill="#F5E8E6" stroke="#E8C5C2" stroke-width="1.5"/></g>
+          <g class="body-zone" id="zone-chest" onclick="selectZone('chest')" data-title="Borst &amp; Hart" data-desc="Openheid of beklemming, adem die vloeit of stokt, wat draag je hier mee?"><rect x="55" y="88" width="70" height="60" rx="10" fill="#F5E8E6" stroke="#E8C5C2" stroke-width="1.5"/></g>
+          <g class="body-zone" id="zone-belly" onclick="selectZone('belly')" data-title="Buik &amp; Intuïtie" data-desc="Je gut feeling, spanning of rust, vlinders of leegte. Wat voelt je buik?"><rect x="60" y="146" width="60" height="55" rx="8" fill="#F5E8E6" stroke="#E8C5C2" stroke-width="1.5"/></g>
+          <g class="body-zone" id="zone-arms" onclick="selectZone('arms')" data-title="Armen &amp; Handen" data-desc="Kracht of vermoeidheid, vasthouden of loslaten, wat doen jouw handen?"><rect x="20" y="90" width="22" height="90" rx="8" fill="#F5E8E6" stroke="#E8C5C2" stroke-width="1.5"/><rect x="138" y="90" width="22" height="90" rx="8" fill="#F5E8E6" stroke="#E8C5C2" stroke-width="1.5"/></g>
+          <g class="body-zone" id="zone-legs" onclick="selectZone('legs')" data-title="Benen &amp; Voeten" data-desc="Stabiliteit of rusteloosheid, verbinding met de aarde, draagkracht."><rect x="63" y="200" width="24" height="110" rx="8" fill="#F5E8E6" stroke="#E8C5C2" stroke-width="1.5"/><rect x="93" y="200" width="24" height="110" rx="8" fill="#F5E8E6" stroke="#E8C5C2" stroke-width="1.5"/></g>
+        </svg>
+      </div>
+      <div class="zone-info" id="zone-info"><p class="zone-desc" style="color:var(--rose-light);font-style:italic;">Klik op een lichaamszone hierboven...</p></div>
+      <div class="section-label">Spanningsscore per zone</div>
+      <div class="scan-grid">
+        <div class="scan-card"><p class="scan-card-label">Hoofd</p><div class="tension-bar" onclick="setTension(this,event)"><div class="tension-fill" style="width:0%"></div></div></div>
+        <div class="scan-card"><p class="scan-card-label">Nek &amp; Schouders</p><div class="tension-bar" onclick="setTension(this,event)"><div class="tension-fill" style="width:0%"></div></div></div>
+        <div class="scan-card"><p class="scan-card-label">Borst &amp; Adem</p><div class="tension-bar" onclick="setTension(this,event)"><div class="tension-fill" style="width:0%"></div></div></div>
+        <div class="scan-card"><p class="scan-card-label">Buik</p><div class="tension-bar" onclick="setTension(this,event)"><div class="tension-fill" style="width:0%"></div></div></div>
+        <div class="scan-card"><p class="scan-card-label">Onderrug</p><div class="tension-bar" onclick="setTension(this,event)"><div class="tension-fill" style="width:0%"></div></div></div>
+        <div class="scan-card"><p class="scan-card-label">Benen</p><div class="tension-bar" onclick="setTension(this,event)"><div class="tension-fill" style="width:0%"></div></div></div>
+      </div>
+      <div class="section-label">Wat wil mijn lichaam mij vertellen?</div>
+      <textarea id="scan-msg" class="journal-area" rows="3" placeholder="Schrijf vrij, zonder oordeel..." oninput="autosave()"></textarea>
+      <div class="btn-row" style="margin-top:1.25rem;">
+        <button class="save-btn" onclick="saveDay();flashSave()">Opslaan ✦</button>
+        <button class="save-btn dark" onclick="openScanPDF()">Scan PDF ↗</button>
+      </div>
+    </div>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+  </div>
+
+  <!-- DANKBAARHEID -->
+  <div id="gratitude" class="page">
+    <div class="workbook-page">
+      <div class="page-header"><span class="page-tag">Dankbaarheidslog</span><h2 class="page-title">Wat mag er zijn?</h2></div>
+      <div class="quote-box"><p>"Dankbaarheid is geen emotie. Het is een manier van kijken."</p></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;"><p style="font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm-gray);">Jouw streak</p><div style="display:flex;gap:4px;" id="streak-dots"></div></div>
+      <div id="gratitude-days"></div>
+      <div class="section-label">Wat raakte mij vandaag echt?</div>
+      <textarea id="grat-deep" class="journal-area" rows="3" placeholder="Een moment, een woord, een gevoel..." oninput="autosave()"></textarea>
+      <div class="section-label">Iets moois aan mezelf vandaag</div>
+      <textarea class="journal-area" rows="2" placeholder="Wees eerlijk en mild tegelijk..."></textarea>
+      <div class="section-label">Mijn dankbaarheid gaat uit naar</div>
+      <div class="check-grid">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Mezelf</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Mijn lichaam</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Een persoon</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>De natuur</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Het leven</span></div>
+      </div>
+      <button class="save-btn" onclick="saveDay();flashSave()" style="margin-top:1.25rem;">Opslaan ✦</button>
+    </div>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+  </div>
+
+  <!-- INFRAROOD -->
+  <div id="infrared" class="page">
+    <div class="workbook-page">
+      <div class="page-header"><span class="page-tag">Infrarood Coaching</span><h2 class="page-title">Jouw sessie logboek</h2></div>
+      <div class="quote-box ir"><p>"Warmte gaat dieper dan de huid. Het bereikt wat spanning al jaren vasthoudt."</p></div>
+      <div class="session-hdr"><div class="ir-icon">🌡</div><div><p class="ir-session-title">Sessie registreren</p><p class="ir-session-sub" id="ir-date-label"></p></div></div>
+      <div class="section-label">Temperatuur</div>
+      <div class="temp-selector"><div class="temp-btn" onclick="selectTemp(this)">37°C</div><div class="temp-btn" onclick="selectTemp(this)">37.5°C</div><div class="temp-btn" onclick="selectTemp(this)">38°C</div><div class="temp-btn" onclick="selectTemp(this)">38.5°C</div><div class="temp-btn" onclick="selectTemp(this)">39°C</div></div>
+      <div class="section-label">Sessieduur — <span id="dur-val">30</span> min</div>
+      <input class="duration-slider" type="range" min="10" max="60" step="5" value="30" oninput="document.getElementById('dur-val').textContent=this.value">
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--warm-gray);text-transform:uppercase;margin-bottom:0.4rem;"><span>10 min</span><span>60 min</span></div>
+      <div class="section-label">Vóór vs. Na de sessie</div>
+      <div class="before-after">
+        <div class="ba-card"><p class="ba-label">Vóór</p><textarea class="journal-area" rows="3" style="font-size:13px;" placeholder="Lichaam, geest..."></textarea></div>
+        <div class="ba-card"><p class="ba-label" style="color:var(--infrared);">Na</p><textarea class="journal-area" rows="3" style="font-size:13px;" placeholder="Lichaam, geest..."></textarea></div>
+      </div>
+      <div class="section-label">Wat voelde je?</div>
+      <div class="benefit-grid">
+        <div class="benefit-card" onclick="toggleBenefit(this)"><span class="benefit-icon">🔥</span><span class="benefit-name">Diepe warmte</span></div>
+        <div class="benefit-card" onclick="toggleBenefit(this)"><span class="benefit-icon">😌</span><span class="benefit-name">Ontspanning</span></div>
+        <div class="benefit-card" onclick="toggleBenefit(this)"><span class="benefit-icon">💧</span><span class="benefit-name">Zweten</span></div>
+        <div class="benefit-card" onclick="toggleBenefit(this)"><span class="benefit-icon">⚡</span><span class="benefit-name">Energie boost</span></div>
+        <div class="benefit-card" onclick="toggleBenefit(this)"><span class="benefit-icon">🧘</span><span class="benefit-name">Mentale rust</span></div>
+        <div class="benefit-card" onclick="toggleBenefit(this)"><span class="benefit-icon">💪</span><span class="benefit-name">Spierherstel</span></div>
+        <div class="benefit-card" onclick="toggleBenefit(this)"><span class="benefit-icon">✨</span><span class="benefit-name">Huid glowing</span></div>
+        <div class="benefit-card" onclick="toggleBenefit(this)"><span class="benefit-icon">🌙</span><span class="benefit-name">Betere slaap</span></div>
+      </div>
+      <div class="section-label">Notitie</div>
+      <textarea id="ir-note" class="journal-area" rows="3" placeholder="Wat wil ik onthouden van deze sessie?" oninput="autosave()"></textarea>
+      <div class="section-label">Sessiekalender 2026</div>
+      <div style="background:#fff;border:1px solid var(--rose-pale);border-radius:10px;padding:1rem;margin-top:0.4rem;">
+        <div class="cal-nav">
+          <button class="cal-nav-btn" id="cal-prev" onclick="calNav(-1)">&#8592;</button>
+          <div><div class="cal-month-lbl" id="cal-month-name"></div><div class="cal-year-lbl" id="cal-year-name"></div></div>
+          <button class="cal-nav-btn" id="cal-next" onclick="calNav(1)">&#8594;</button>
+        </div>
+        <div class="cal-hdr"><span>Ma</span><span>Di</span><span>Wo</span><span>Do</span><span>Vr</span><span>Za</span><span>Zo</span></div>
+        <div class="cal-grid" id="cal-grid"></div>
+        <div style="margin-top:0.75rem;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:5px;"><div style="width:12px;height:12px;background:var(--infrared);border-radius:3px;"></div><span style="font-size:10px;color:var(--warm-gray);">Sessie</span></div>
+          <span id="session-total-label" style="margin-left:auto;font-size:11px;color:var(--infrared);font-weight:500;"></span>
+        </div>
+      </div>
+      <div style="margin-top:1.25rem;background:var(--infrared-pale);border-radius:10px;padding:1rem;">
+        <p style="font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--infrared);margin-bottom:0.5rem;">Infrarood weetje</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--text-muted);line-height:1.6;" id="ir-tip"></p>
+      </div>
+      <div class="btn-row" style="margin-top:1.25rem;">
+        <button class="save-btn ir-btn" onclick="saveIrSession()">Sessie opslaan ✦</button>
+        <button class="save-btn dark" onclick="openIrPDF()">Sessie PDF ↗</button>
+      </div>
+    </div>
+    <footer class="site-footer"><p>Body Bloom ♡ Infrarood Coaching ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+  </div>
+
+  <!-- AVOND -->
+  <div id="evening" class="page">
+    <div class="workbook-page">
+      <div class="page-header"><span class="page-tag">Avond Reflectie</span><h2 class="page-title">Hoe sluit jij jouw dag?</h2></div>
+      <div class="quote-box"><p>"Rust is geen beloning voor een drukke dag. Rust is een recht van jouw lichaam."</p></div>
+      <div class="section-label">3 dingen die ik vandaag heb ervaren</div>
+      <textarea id="ev-3" class="journal-area" rows="4" placeholder="1. &#10;2. &#10;3. " oninput="autosave()"></textarea>
+      <div class="section-label">Wat heeft mij vandaag geraakt?</div>
+      <textarea id="ev-touch" class="journal-area" rows="3" placeholder="Schrijf vrij..." oninput="autosave()"></textarea>
+      <div class="section-label">Wat heb ik geleerd over mezelf?</div>
+      <textarea id="ev-learn" class="journal-area" rows="3" placeholder="Een inzicht, een patroon..." oninput="autosave()"></textarea>
+      <div class="section-label">Vanavond verwelkom ik</div>
+      <div class="check-grid">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Warm bad</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Meditatie</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Journaling</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Zachte muziek</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Vroeg slapen</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span>Infrarood sessie</span></div>
+      </div>
+      <div style="margin-top:1.5rem;text-align:center;"><p style="font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--rose);">♡ Slaap zacht. Morgen bloei je opnieuw. ♡</p></div>
+      <div class="btn-row">
+        <button class="save-btn" onclick="saveDay();flashSave()">Opslaan ✦</button>
+        <button class="save-btn dark" onclick="openDayPDF()">Dag PDF ↗</button>
+      </div>
+    </div>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+  </div>
+
+  <!-- IKIGAI -->
+  <div id="ikigai" class="page">
+    <div class="workbook-page">
+      <div class="page-header"><span class="page-tag">Jouw Ikigai</span><h2 class="page-title">Vind jouw reden van bestaan</h2></div>
+      <div class="quote-box"><p>"Ikigai is het punt waar jouw passie, missie, roeping en professie samenkomen."</p></div>
+      <div style="display:flex;justify-content:center;margin:1.25rem 0;overflow:hidden;">
+        <svg width="300" height="280" viewBox="0 0 520 480" xmlns="http://www.w3.org/2000/svg">
+          <text x="100" y="68" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#A06060" font-style="italic">Wat ik liefheb</text>
+          <text x="420" y="68" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#A06060" font-style="italic">Wat de wereld</text>
+          <text x="420" y="83" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#A06060" font-style="italic">nodig heeft</text>
+          <text x="100" y="415" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#A06060" font-style="italic">Waar ik goed in ben</text>
+          <text x="420" y="408" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#A06060" font-style="italic">Waarvoor ik</text>
+          <text x="420" y="423" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#A06060" font-style="italic">betaald kan worden</text>
+          <circle cx="200" cy="210" r="110" fill="#E8C5C2" fill-opacity="0.35" stroke="#C9908A" stroke-width="1.5"/>
+          <circle cx="320" cy="210" r="110" fill="#D4A8A0" fill-opacity="0.30" stroke="#C9908A" stroke-width="1.5"/>
+          <circle cx="200" cy="300" r="110" fill="#C9908A" fill-opacity="0.22" stroke="#C9908A" stroke-width="1.5"/>
+          <circle cx="320" cy="300" r="110" fill="#A06060" fill-opacity="0.17" stroke="#C9908A" stroke-width="1.5"/>
+          <text x="260" y="162" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#C9908A" font-style="italic">Missie</text>
+          <text x="260" y="370" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#C9908A" font-style="italic">Professie</text>
+          <text x="150" y="260" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#C9908A" font-style="italic">Passie</text>
+          <text x="370" y="260" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#C9908A" font-style="italic">Roeping</text>
+          <circle cx="260" cy="255" r="34" fill="white" fill-opacity="0.75" stroke="#C9908A" stroke-width="1"/>
+          <text x="260" y="252" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#7A4040" font-weight="bold">IKIGAI</text>
+          <text x="260" y="267" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#C9908A" font-style="italic">reden van bestaan</text>
+        </svg>
+      </div>
+      <div class="ikigai-questions">
+        <div class="ikigai-card"><p class="ikigai-card-title">Wat ik liefheb</p><textarea id="ik-love" class="journal-area" rows="3" style="font-size:13px;" placeholder="Activiteiten, mensen..." oninput="autosave()"></textarea></div>
+        <div class="ikigai-card"><p class="ikigai-card-title">Wat de wereld nodig heeft</p><textarea id="ik-world" class="journal-area" rows="3" style="font-size:13px;" placeholder="Bijdragen, impact..." oninput="autosave()"></textarea></div>
+        <div class="ikigai-card"><p class="ikigai-card-title">Waar ik goed in ben</p><textarea id="ik-good" class="journal-area" rows="3" style="font-size:13px;" placeholder="Talenten, gaven..." oninput="autosave()"></textarea></div>
+        <div class="ikigai-card"><p class="ikigai-card-title">Waarvoor ik betaald kan worden</p><textarea id="ik-paid" class="journal-area" rows="3" style="font-size:13px;" placeholder="Diensten, expertise..." oninput="autosave()"></textarea></div>
+      </div>
+      <div class="section-label">Mijn Ikigai in één zin</div>
+      <textarea id="ik-sent" class="journal-area" rows="2" placeholder="Ik bloei wanneer ik..." oninput="autosave()"></textarea>
+      <div class="btn-row">
+        <button class="save-btn" onclick="flashSave()">Opslaan ✦</button>
+        <button class="save-btn dark" onclick="openDayPDF()">Dag PDF ↗</button>
+      </div>
+    </div>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+  </div>
+
+  <!-- WEEK -->
+  <div id="week" class="page">
+    <div class="workbook-page">
+      <div class="page-header"><span class="page-tag">Weekoverzicht</span><h2 class="page-title">Jouw week in balans</h2></div>
+      <div class="week-nav">
+        <button class="week-nav-btn" onclick="weekNav(-1)">&#8592;</button>
+        <div><div class="week-lbl" id="week-label"></div><div class="week-sub" id="week-sub"></div></div>
+        <button class="week-nav-btn" onclick="weekNav(1)">&#8594;</button>
+      </div>
+      <div class="day-tabs" id="day-tabs"></div>
+      <div id="day-panels"></div>
+      <div class="week-summary-box">
+        <p class="week-sum-title">Weekoverzicht</p>
+        <div id="week-overview"></div>
+      </div>
+      <div class="btn-row" style="margin-top:1.25rem;">
+        <button class="save-btn" onclick="flashSave()">Week opslaan ✦</button>
+        <button class="save-btn dark" onclick="openWeekPDF()">Week PDF ↗</button>
+      </div>
+    </div>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+  </div>
+
+</div><!-- end app-body -->
+
+<!-- BOTTOM TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-item active" onclick="showPage('cover',this)"><span class="tab-icon">🌸</span><span class="tab-label">Home</span><div class="tab-dot"></div></button>
+  <button class="tab-item" onclick="showPage('morning',this)"><span class="tab-icon">☀️</span><span class="tab-label">Ochtend</span><div class="tab-dot"></div></button>
+  <button class="tab-item" onclick="showPage('bodyscan',this)"><span class="tab-icon">🫁</span><span class="tab-label">Scan</span><div class="tab-dot"></div></button>
+  <button class="tab-item" onclick="showPage('infrared',this)"><span class="tab-icon">🔥</span><span class="tab-label">Infrarood</span><div class="tab-dot"></div></button>
+  <button class="tab-item" onclick="showPage('evening',this)"><span class="tab-icon">🌙</span><span class="tab-label">Avond</span><div class="tab-dot"></div></button>
+  <button class="tab-item" onclick="showPage('week',this)"><span class="tab-icon">📅</span><span class="tab-label">Week</span><div class="tab-dot"></div></button>
+  <button class="tab-item" onclick="showPage('ikigai',this)"><span class="tab-icon">✦</span><span class="tab-label">Ikigai</span><div class="tab-dot"></div></button>
+</div>
+
+<!-- MIJN DATA MODAL -->
+<div class="modal-overlay" id="data-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 class="modal-title">Mijn data</h2>
+    <p class="modal-meta">Jouw persoonlijke Body Bloom gegevens staan veilig op dit toestel.</p>
+    <div id="data-modal-content"></div>
+    <div class="modal-actions" style="margin-top:1rem;">
+      <button class="modal-close" onclick="closeModal('data-modal')">Sluiten</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCAN PDF MODAL -->
+<div class="modal-overlay" id="scan-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 class="modal-title">Body Scan Samenvatting</h2>
+    <p class="modal-meta" id="scan-modal-meta"></p>
+    <div class="sum-block"><p class="sum-tag">Wat mijn lichaam mij vertelde</p><p class="sum-text" id="sum-scan-msg"></p></div>
+    <div class="sum-block"><p class="sum-tag">Spanningszones (geselecteerd)</p><p class="sum-text" id="sum-scan-zones"></p></div>
+    <div class="sum-block"><p class="sum-tag">Zone die de meeste aandacht vroeg</p><p class="sum-text" id="sum-scan-zone"></p></div>
+    <div class="modal-footer"><p>"Je lichaam spreekt altijd. De kunst is leren luisteren."</p><p class="copy">© 2026 Body Bloom — Alle rechten voorbehouden</p></div>
+    <div class="modal-actions">
+      <button class="save-btn dark" onclick="window.print()">Afdrukken / PDF ↗</button>
+      <button class="modal-close" onclick="closeModal('scan-modal')">Sluiten</button>
+    </div>
+  </div>
+</div>
+
+<!-- INFRAROOD PDF MODAL -->
+<div class="modal-overlay" id="ir-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 class="modal-title">Infrarood Sessie Rapport</h2>
+    <p class="modal-meta" id="ir-modal-meta"></p>
+    <div class="sum-block"><p class="sum-tag">Temperatuur</p><p class="sum-text" id="sum-ir-temp"></p></div>
+    <div class="sum-block"><p class="sum-tag">Sessieduur</p><p class="sum-text" id="sum-ir-dur"></p></div>
+    <div class="sum-block"><p class="sum-tag">Ervaringen tijdens de sessie</p><p class="sum-text" id="sum-ir-benefits"></p></div>
+    <div class="sum-block"><p class="sum-tag">Persoonlijke notitie</p><p class="sum-text" id="sum-ir-note"></p></div>
+    <div class="sum-block"><p class="sum-tag">Totaal sessies in 2026</p><p class="sum-text" id="sum-ir-total"></p></div>
+    <div class="modal-footer"><p>"Warmte gaat dieper dan de huid. Het bereikt wat spanning al jaren vasthoudt."</p><p class="copy">© 2026 Body Bloom — Alle rechten voorbehouden</p></div>
+    <div class="modal-actions">
+      <button class="save-btn dark" onclick="window.print()">Afdrukken / PDF ↗</button>
+      <button class="modal-close" onclick="closeModal('ir-modal')">Sluiten</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-overlay" id="day-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 class="modal-title">Samenvatting van vandaag</h2>
+    <p class="modal-meta" id="day-modal-meta"></p>
+    <div class="sum-block"><p class="sum-tag">Intentie</p><p class="sum-text" id="sum-int"></p></div>
+    <div class="sum-block"><p class="sum-tag">Dankbaarheid</p><p class="sum-text" id="sum-grat"></p></div>
+    <div class="sum-block"><p class="sum-tag">Body Scan</p><p class="sum-text" id="sum-scan"></p></div>
+    <div class="sum-block"><p class="sum-tag">Avond — Wat ik heb geleerd</p><p class="sum-text" id="sum-learn"></p></div>
+    <div class="sum-block"><p class="sum-tag">Avond — Wat mij raakte</p><p class="sum-text" id="sum-touch"></p></div>
+    <div class="sum-block"><p class="sum-tag">Ikigai — Mijn reden van bestaan</p><p class="sum-text" id="sum-ik"></p></div>
+    <div class="modal-footer"><p>"Jouw lichaam weet de weg. Vertrouw het. Voel het. Bloei."</p><p class="copy">© 2026 Body Bloom — Alle rechten voorbehouden</p></div>
+    <div class="modal-actions">
+      <button class="save-btn dark" onclick="window.print()">Afdrukken / PDF ↗</button>
+      <button class="modal-close" onclick="closeModal('day-modal')">Sluiten</button>
+    </div>
+  </div>
+</div>
+
+<!-- WEEK PDF MODAL -->
+<div class="modal-overlay" id="week-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 class="modal-title">Weekoverzicht</h2>
+    <p class="modal-meta" id="week-modal-meta"></p>
+    <div id="week-modal-content"></div>
+    <div class="modal-footer"><p>"Balans is geen stilstand. Het is een dans."</p><p class="copy">© 2026 Body Bloom — Alle rechten voorbehouden</p></div>
+    <div class="modal-actions">
+      <button class="save-btn dark" onclick="window.print()">Afdrukken / PDF ↗</button>
+      <button class="modal-close" onclick="closeModal('week-modal')">Sluiten</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── SERVICE WORKER ────────────────────────────────────────────────────
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/BodyBloom_mindfulness_werkboek/sw.js').catch(()=>{});
+}
+
+// ── ONLINE/OFFLINE ────────────────────────────────────────────────────
+window.addEventListener('offline',()=>document.getElementById('offline-badge').classList.add('show'));
+window.addEventListener('online',()=>document.getElementById('offline-badge').classList.remove('show'));
+
+// ── PWA INSTALL ───────────────────────────────────────────────────────
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredPrompt=e;
+  if(!localStorage.getItem('bb-install-dismissed')){
+    document.getElementById('install-banner').classList.remove('hidden');
+  }
+});
+document.getElementById('install-btn').onclick=async()=>{
+  if(!deferredPrompt)return;
+  deferredPrompt.prompt();
+  const {outcome}=await deferredPrompt.userChoice;
+  deferredPrompt=null;
+  document.getElementById('install-banner').classList.add('hidden');
+};
+function dismissInstall(){
+  document.getElementById('install-banner').classList.add('hidden');
+  localStorage.setItem('bb-install-dismissed','1');
+}
+// iOS Safari hint
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)&&!navigator.userAgent.includes('CriOS');
+const isStandalone=window.navigator.standalone;
+if(isIOS&&!isStandalone&&!localStorage.getItem('bb-install-dismissed')){
+  const banner=document.getElementById('install-banner');
+  banner.querySelector('.install-banner-text').innerHTML='<strong>Installeer Body Bloom op iPhone</strong>Tik op <span style="font-size:16px;">⎙</span> en kies "Zet op beginscherm"';
+  banner.querySelector('#install-btn').style.display='none';
+  banner.classList.remove('hidden');
+}
+
+// ── PAGES ─────────────────────────────────────────────────────────────
+const PAGES=['cover','morning','bodyscan','gratitude','infrared','evening','ikigai','week'];
+function showPage(id,btn){
+  PAGES.forEach(p=>document.getElementById(p).classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab-item').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('app-body').scrollTo(0,0);
+  if(id==='week')renderWeek();
+}
+
+// ── ROBUST STORAGE SYSTEM ─────────────────────────────────────────────
+// Data wordt opgeslagen per datum-sleutel zodat historische data bewaard blijft.
+// Structuur in localStorage:
+//   bb-profile          → naam, vaste ikigai data
+//   bb-day-YYYY-MM-DD   → dagelijkse invuldata per datum
+//   bb-sessions         → array van infrarood sessie datums
+//   bb-weekdata         → week invuldata
+//   bb-meta             → versie, eerste gebruik, etc.
+
+const FIELDS_PROFILE=['cover-name','ik-love','ik-world','ik-good','ik-paid','ik-sent'];
+const FIELDS_DAILY=['m-body','m-grat','m-int','scan-msg','grat-deep','ir-note','ev-3','ev-touch','ev-learn'];
+
+function todayKey(){return new Date().toISOString().slice(0,10);}
+
+function getStorage(key,fallback=null){
+  try{const r=localStorage.getItem(key);return r?JSON.parse(r):fallback;}catch(e){return fallback;}
+}
+function setStorage(key,value){
+  try{localStorage.setItem(key,JSON.stringify(value));return true;}catch(e){
+    // storage vol — probeer oude dagdata op te ruimen
+    pruneOldDays(30);
+    try{localStorage.setItem(key,JSON.stringify(value));return true;}catch(e2){return false;}
+  }
+}
+
+// Verwijder dagdata ouder dan N dagen als storage vol is
+function pruneOldDays(keepDays=60){
+  const cutoff=new Date();cutoff.setDate(cutoff.getDate()-keepDays);
+  Object.keys(localStorage).forEach(k=>{
+    if(k.startsWith('bb-day-')){
+      const date=new Date(k.replace('bb-day-',''));
+      if(date<cutoff)localStorage.removeItem(k);
+    }
+  });
+}
+
+let saveTimer=null;
+function autosave(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{
+    // Sla profieldata op (naam, ikigai — permanent)
+    const profile=getStorage('bb-profile',{});
+    FIELDS_PROFILE.forEach(id=>{const e=document.getElementById(id);if(e&&e.value)profile[id]=e.value;});
+    setStorage('bb-profile',profile);
+    // Sla dagdata op met datum als sleutel
+    const dayData=getStorage('bb-day-'+todayKey(),{});
+    FIELDS_DAILY.forEach(id=>{const e=document.getElementById(id);if(e&&e.value)dayData[id]=e.value;});
+    dayData._saved=new Date().toISOString();
+    setStorage('bb-day-'+todayKey(),dayData);
+    // Update meta
+    const meta=getStorage('bb-meta',{});
+    if(!meta.firstUse)meta.firstUse=new Date().toISOString();
+    meta.lastSave=new Date().toISOString();
+    meta.version='2.0';
+    setStorage('bb-meta',meta);
+    flashSave();
+  },600);
+}
+
+function loadSaved(){
+  // Laad profieldata
+  try{
+    const profile=getStorage('bb-profile',{});
+    FIELDS_PROFILE.forEach(id=>{const e=document.getElementById(id);if(e&&profile[id])e.value=profile[id];});
+  }catch(e){}
+  // Laad dagdata van vandaag
+  try{
+    const dayData=getStorage('bb-day-'+todayKey(),{});
+    FIELDS_DAILY.forEach(id=>{const e=document.getElementById(id);if(e&&dayData[id])e.value=dayData[id];});
+  }catch(e){}
+  // Laad sessies
+  try{
+    const sessions=getStorage('bb-sessions',[]);
+    sessions.forEach(k=>irSessions.add(k));
+  }catch(e){}
+  // Laad weekdata
+  try{
+    const wd=getStorage('bb-weekdata',{});
+    Object.assign(weekData,wd);
+  }catch(e){}
+}
+
+function flashSave(){
+  const el=document.getElementById('save-indicator');
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2000);
+}
+
+// ── EXPORT / IMPORT BACKUP ────────────────────────────────────────────
+function exportBackup(){
+  const backup={
+    version:'2.0',
+    exportDate:new Date().toISOString(),
+    profile:getStorage('bb-profile',{}),
+    sessions:getStorage('bb-sessions',[]),
+    weekdata:getStorage('bb-weekdata',{}),
+    meta:getStorage('bb-meta',{}),
+    days:{}
+  };
+  // Verzamel alle dagdata
+  Object.keys(localStorage).forEach(k=>{
+    if(k.startsWith('bb-day-')){
+      try{backup.days[k.replace('bb-day-','')]=JSON.parse(localStorage.getItem(k));}catch(e){}
+    }
+  });
+  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const name=backup.profile['cover-name']||'BodyBloom';
+  a.href=url;a.download=`${name}_backup_${todayKey()}.json`;
+  document.body.appendChild(a);a.click();
+  document.body.removeChild(a);URL.revokeObjectURL(url);
+}
+
+function importBackup(file){
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const backup=JSON.parse(e.target.result);
+      if(!backup.version)throw new Error('Ongeldig bestand');
+      if(backup.profile)setStorage('bb-profile',backup.profile);
+      if(backup.sessions)setStorage('bb-sessions',backup.sessions);
+      if(backup.weekdata)setStorage('bb-weekdata',backup.weekdata);
+      if(backup.meta)setStorage('bb-meta',backup.meta);
+      if(backup.days){
+        Object.entries(backup.days).forEach(([date,data])=>{
+          setStorage('bb-day-'+date,data);
+        });
+      }
+      // herlaad de app
+      loadSaved();
+      renderCalendar();
+      closeModal('data-modal');
+      flashSave();
+      alert('✓ Back-up hersteld! Jouw data is terug.');
+    }catch(err){
+      alert('Dit bestand kan niet worden gelezen. Zorg dat je een Body Bloom back-up gebruikt.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ── DATA MODAL ────────────────────────────────────────────────────────
+function openDataModal(){
+  const meta=getStorage('bb-meta',{});
+  const profile=getStorage('bb-profile',{});
+  const sessions=getStorage('bb-sessions',[]);
+  // Tel dagentries
+  const dagCount=Object.keys(localStorage).filter(k=>k.startsWith('bb-day-')).length;
+  const weekCount=Object.keys(getStorage('bb-weekdata',{})).length;
+  const firstUse=meta.firstUse?new Date(meta.firstUse).toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'}):'Onbekend';
+  const lastSave=meta.lastSave?new Date(meta.lastSave).toLocaleDateString('nl-NL',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):'Nog niet opgeslagen';
+
+  document.getElementById('data-modal-content').innerHTML=`
+    <div class="sum-block">
+      <p class="sum-tag">Gebruiker</p>
+      <p class="sum-text">${profile['cover-name']||'Naam nog niet ingevuld'}</p>
+    </div>
+    <div class="sum-block">
+      <p class="sum-tag">Eerste gebruik</p>
+      <p class="sum-text">${firstUse}</p>
+    </div>
+    <div class="sum-block">
+      <p class="sum-tag">Laatste opslag</p>
+      <p class="sum-text">${lastSave}</p>
+    </div>
+    <div class="sum-block">
+      <p class="sum-tag">Opgeslagen dagen</p>
+      <p class="sum-text">${dagCount} dag${dagCount!==1?'en':''} met data</p>
+    </div>
+    <div class="sum-block">
+      <p class="sum-tag">Infrarood sessies</p>
+      <p class="sum-text">${sessions.length} sessie${sessions.length!==1?'s':''} totaal</p>
+    </div>
+    <div class="sum-block">
+      <p class="sum-tag">Privacy</p>
+      <p class="sum-text">Alle data staat uitsluitend op jouw toestel. Niemand anders heeft toegang.</p>
+    </div>
+    <div style="background:var(--rose-pale);border-radius:8px;padding:1rem;margin-top:0.5rem;">
+      <p style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--rose-deep);margin-bottom:0.5rem;">Back-up</p>
+      <p style="font-size:12px;color:var(--warm-gray);line-height:1.5;margin-bottom:0.75rem;">Download een back-up van al jouw data. Bewaar dit bestand op een veilige plek of in iCloud/Google Drive. Zo kan je jouw data altijd herstellen op een nieuw toestel.</p>
+      <button class="save-btn dark" onclick="exportBackup()" style="margin-top:0;">Back-up downloaden ↓</button>
+    </div>
+    <div style="background:#fff;border:1px solid var(--rose-pale);border-radius:8px;padding:1rem;margin-top:0.75rem;">
+      <p style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:0.5rem;">Herstellen vanuit back-up</p>
+      <p style="font-size:12px;color:var(--warm-gray);line-height:1.5;margin-bottom:0.75rem;">Kies een eerder gedownload back-upbestand om jouw data te herstellen.</p>
+      <input type="file" accept=".json" id="import-file" style="display:none" onchange="importBackup(this.files[0])">
+      <button class="save-btn" onclick="document.getElementById('import-file').click()" style="margin-top:0;">Back-up herstellen ↑</button>
+    </div>
+  `;
+  document.getElementById('data-modal').classList.add('open');
+}
+
+// ── COMPONENTS ────────────────────────────────────────────────────────
+function selectMood(el){el.closest('.mood-grid').querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
+function toggleCheck(el){el.classList.toggle('checked');}
+function toggleBenefit(el){el.classList.toggle('selected');}
+function selectTemp(el){el.closest('.temp-selector').querySelectorAll('.temp-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
+function selectZone(id){
+  document.querySelectorAll('.body-zone').forEach(z=>z.classList.remove('active'));
+  const z=document.getElementById('zone-'+id);z.classList.add('active');
+  document.getElementById('zone-info').innerHTML=`<p class="zone-title">${z.dataset.title}</p><p class="zone-desc">${z.dataset.desc}</p><textarea class="journal-area" rows="2" style="margin-top:0.5rem;font-size:13px;" placeholder="Schrijf vrij..."></textarea>`;
+}
+function setTension(bar,e){
+  const r=bar.getBoundingClientRect();
+  bar.querySelector('.tension-fill').style.width=Math.round((Math.max(0,Math.min(e.clientX-r.left,r.width))/r.width)*100)+'%';
+}
+
+// ── INFRARED CALENDAR ─────────────────────────────────────────────────
+const MONTHS_CAP=['Januari','Februari','Maart','April','Mei','Juni','Juli','Augustus','September','Oktober','November','December'];
+const irSessions=new Set();
+let calYear=2026,calMonth=new Date().getMonth();
+function calKey(y,m,d){return`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
+function renderCalendar(){
+  const grid=document.getElementById('cal-grid');grid.innerHTML='';
+  document.getElementById('cal-month-name').textContent=MONTHS_CAP[calMonth];
+  document.getElementById('cal-year-name').textContent=calYear;
+  document.getElementById('cal-prev').disabled=(calYear===2026&&calMonth===0);
+  document.getElementById('cal-next').disabled=(calYear===2027&&calMonth===11);
+  const today=new Date();
+  const offset=(new Date(calYear,calMonth,1).getDay()+6)%7;
+  const dim=new Date(calYear,calMonth+1,0).getDate();
+  for(let i=0;i<offset;i++){const e=document.createElement('div');e.className='cal-day empty';grid.appendChild(e);}
+  for(let d=1;d<=dim;d++){
+    const key=calKey(calYear,calMonth,d);
+    const isToday=today.getDate()===d&&today.getMonth()===calMonth&&today.getFullYear()===calYear;
+    const el=document.createElement('div');
+    el.className='cal-day'+(isToday?' today':'')+(irSessions.has(key)?' has-session':'');
+    el.textContent=d;
+    el.onclick=()=>{
+      irSessions.has(key)?irSessions.delete(key):irSessions.add(key);
+      setStorage('bb-sessions',[...irSessions]);
+      renderCalendar();
+    };
+    grid.appendChild(el);
+  }
+  const yr=[...irSessions].filter(k=>k.startsWith(String(calYear)));
+  document.getElementById('session-total-label').textContent=`${yr.length} sessies in ${calYear}`;
+}
+function calNav(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
+function saveIrSession(){
+  const t=new Date();irSessions.add(calKey(t.getFullYear(),t.getMonth(),t.getDate()));
+  setStorage('bb-sessions',[...irSessions]);
+  renderCalendar();saveDay();flashSave();
+}
+
+// ── WEEK DATA ─────────────────────────────────────────────────────────
+const DAY_NAMES=['Maandag','Dinsdag','Woensdag','Donderdag','Vrijdag','Zaterdag','Zondag'];
+const MONTHS=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+const weekData={};
+let weekOffset=0;
+function getWeekStart(offset=0){const now=new Date();const dow=(now.getDay()+6)%7;const mon=new Date(now);mon.setDate(now.getDate()-dow+(offset*7));mon.setHours(0,0,0,0);return mon;}
+function weekKey(ws,i){const d=new Date(ws);d.setDate(d.getDate()+i);return d.toISOString().slice(0,10);}
+function saveWeekDay(i,field,value){
+  const key=weekKey(getWeekStart(weekOffset),i);
+  if(!weekData[key])weekData[key]={};
+  weekData[key][field]=value;
+  setStorage('bb-weekdata',weekData);
+}
+function saveDay(){
+  const dow=(new Date().getDay()+6)%7;
+  const key=weekKey(getWeekStart(0),dow);
+  if(!weekData[key])weekData[key]={};
+  const vv=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
+  if(vv('m-int'))weekData[key].intention=vv('m-int');
+  if(vv('m-grat'))weekData[key].gratitude=vv('m-grat');
+  if(vv('ev-learn'))weekData[key].learned=vv('ev-learn');
+  if(vv('ev-touch'))weekData[key].touched=vv('ev-touch');
+  if(vv('ir-note'))weekData[key].note=vv('ir-note');
+  setStorage('bb-weekdata',weekData);
+  autosave();
+}
+function renderWeek(){
+  const ws=getWeekStart(weekOffset);
+  const we=new Date(ws);we.setDate(ws.getDate()+6);
+  document.getElementById('week-label').textContent=`${ws.getDate()} ${MONTHS[ws.getMonth()]} — ${we.getDate()} ${MONTHS[we.getMonth()]}`;
+  document.getElementById('week-sub').textContent=String(ws.getFullYear());
+  const tabsEl=document.getElementById('day-tabs');
+  const panelsEl=document.getElementById('day-panels');
+  const overviewEl=document.getElementById('week-overview');
+  tabsEl.innerHTML='';panelsEl.innerHTML='';overviewEl.innerHTML='';
+  const today=new Date();today.setHours(0,0,0,0);
+  DAY_NAMES.forEach((name,i)=>{
+    const d=new Date(ws);d.setDate(ws.getDate()+i);
+    const key=weekKey(ws,i);
+    const data=weekData[key]||{};
+    const hasData=!!(data.intention||data.gratitude||data.learned||data.touched||data.note);
+    const isToday=d.getTime()===today.getTime();
+    const tab=document.createElement('div');
+    tab.className='day-tab'+(i===0?' active':'')+(hasData?' has-data':'');
+    tab.innerHTML=`<div style="font-weight:${isToday?'500':'400'};color:${isToday?'var(--rose-deep)':'inherit'}">${name.slice(0,2)} ${d.getDate()}</div><div class="ddot"></div>`;
+    tab.onclick=()=>{document.querySelectorAll('.day-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.day-panel').forEach(p=>p.classList.remove('active'));tab.classList.add('active');document.getElementById('panel-'+i).classList.add('active');};
+    tabsEl.appendChild(tab);
+    const panel=document.createElement('div');
+    panel.className='day-panel'+(i===0?' active':'');
+    panel.id='panel-'+i;
+    panel.innerHTML=`
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.9rem;">
+        <p style="font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--rose-deep);">${name} ${d.getDate()} ${MONTHS[d.getMonth()]}</p>
+        ${isToday?'<span style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--rose);border:1px solid var(--rose-light);border-radius:10px;padding:2px 8px;">Vandaag</span>':''}
+      </div>
+      <div class="day-field"><label>Energie</label>
+        <div class="day-mood-row">${['🌸 Bloeiend','🌤 Licht','☁ Neutraal','🌧 Zwaar','⚡ Intensief'].map(m=>`<div class="day-mood-btn${data.mood===m?' selected':''}" onclick="this.closest('.day-mood-row').querySelectorAll('.day-mood-btn').forEach(b=>b.classList.remove('selected'));this.classList.add('selected');saveWeekDay(${i},'mood',this.textContent);">${m}</div>`).join('')}</div>
+      </div>
+      <div class="day-field"><label>Intentie</label><input class="day-input" placeholder="Vandaag kies ik voor..." value="${data.intention||''}" oninput="saveWeekDay(${i},'intention',this.value)"></div>
+      <div class="day-field"><label>Dankbaarheid</label><input class="day-input" placeholder="Ik ben dankbaar voor..." value="${data.gratitude||''}" oninput="saveWeekDay(${i},'gratitude',this.value)"></div>
+      <div class="day-field"><label>Wat ik heb geleerd</label><input class="day-input" placeholder="Een inzicht..." value="${data.learned||''}" oninput="saveWeekDay(${i},'learned',this.value)"></div>
+      <div class="day-field"><label>Wat mij raakte</label><input class="day-input" placeholder="Een moment..." value="${data.touched||''}" oninput="saveWeekDay(${i},'touched',this.value)"></div>
+      <div class="day-field"><label>Vrije notitie</label><input class="day-input" placeholder="Schrijf vrij..." value="${data.note||''}" oninput="saveWeekDay(${i},'note',this.value)"></div>
+    `;
+    panelsEl.appendChild(panel);
+    const row=document.createElement('div');
+    row.className='week-day-row';
+    row.innerHTML=`<span class="week-day-name">${name.slice(0,2)}</span><span class="week-day-content${hasData?'':' empty'}">${data.intention||data.learned||data.note||(hasData?'Ingevuld':'Nog leeg')}</span>`;
+    overviewEl.appendChild(row);
+  });
+}
+function weekNav(dir){weekOffset+=dir;renderWeek();}
+
+// ── GRATITUDE ─────────────────────────────────────────────────────────
+function buildGratitudeLog(){
+  const c=document.getElementById('gratitude-days');if(!c)return;
+  const now=new Date();const days=['Maandag','Dinsdag','Woensdag','Donderdag','Vrijdag','Zaterdag','Zondag'];
+  c.innerHTML=`<div class="grat-day"><div class="grat-hdr"><span class="grat-date">${days[(now.getDay()+6)%7]} ${now.getDate()} ${MONTHS[now.getMonth()]}</span><span class="grat-streak">🌸 Dag 1</span></div><div class="grat-row"><span class="grat-num">1.</span><input id="g1" class="grat-input" type="text" placeholder="Ik ben dankbaar voor..." oninput="autosave()"></div><div class="grat-row"><span class="grat-num">2.</span><input id="g2" class="grat-input" type="text" placeholder="Ik ben dankbaar voor..." oninput="autosave()"></div><div class="grat-row"><span class="grat-num">3.</span><input id="g3" class="grat-input" type="text" placeholder="Ik ben dankbaar voor..." oninput="autosave()"></div></div>`;
+}
+function buildStreakDots(){
+  const c=document.getElementById('streak-dots');if(!c)return;
+  for(let i=0;i<7;i++){const d=document.createElement('div');d.style.cssText=`width:7px;height:7px;border-radius:50%;background:${i===0?'var(--rose)':'var(--rose-pale)'};`;c.appendChild(d);}
+}
+
+// ── PDF MODALS ────────────────────────────────────────────────────────
+const v=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
+function setSum(id,text){const e=document.getElementById(id);if(!e)return;e.textContent=text||'—';e.className='sum-text'+(text?'':' empty');}
+function openDayPDF(){
+  const name=v('cover-name')||'Body Bloom';
+  const now=new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('day-modal-meta').textContent=`${name}  ·  ${now}`;
+  setSum('sum-int',v('m-int'));
+  setSum('sum-grat',[v('g1'),v('g2'),v('g3')].filter(Boolean).join(' · ')||v('m-grat'));
+  setSum('sum-scan',v('scan-msg'));
+  setSum('sum-learn',v('ev-learn'));
+  setSum('sum-touch',v('ev-touch'));
+  setSum('sum-ik',v('ik-sent')||v('ik-love'));
+  document.getElementById('day-modal').classList.add('open');
+}
+function openWeekPDF(){
+  const ws=getWeekStart(weekOffset);
+  const we=new Date(ws);we.setDate(ws.getDate()+6);
+  const name=v('cover-name')||'Body Bloom';
+  document.getElementById('week-modal-meta').textContent=`${name}  ·  ${ws.getDate()} ${MONTHS[ws.getMonth()]} — ${we.getDate()} ${MONTHS[we.getMonth()]} ${we.getFullYear()}`;
+  const content=document.getElementById('week-modal-content');content.innerHTML='';
+  DAY_NAMES.forEach((dn,i)=>{
+    const d=new Date(ws);d.setDate(ws.getDate()+i);
+    const data=weekData[weekKey(ws,i)]||{};
+    const lines=[];
+    if(data.mood)lines.push(`Energie: ${data.mood}`);
+    if(data.intention)lines.push(`Intentie: ${data.intention}`);
+    if(data.gratitude)lines.push(`Dankbaar: ${data.gratitude}`);
+    if(data.learned)lines.push(`Geleerd: ${data.learned}`);
+    if(data.touched)lines.push(`Raakte mij: ${data.touched}`);
+    const block=document.createElement('div');block.className='sum-block';
+    block.innerHTML=`<p class="sum-tag">${dn} ${d.getDate()} ${MONTHS[d.getMonth()]}</p><p class="sum-text${lines.length?'':' empty'}">${lines.join('<br>')||'Nog niet ingevuld'}</p>`;
+    content.appendChild(block);
+  });
+  let irCount=0;
+  for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(ws.getDate()+i);if(irSessions.has(d.toISOString().slice(0,10)))irCount++;}
+  if(irCount){const ir=document.createElement('div');ir.className='sum-block';ir.innerHTML=`<p class="sum-tag">Infrarood sessies</p><p class="sum-text">${irCount} sessie${irCount>1?'s':''} deze week 🔥</p>`;content.appendChild(ir);}
+  document.getElementById('week-modal').classList.add('open');
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+// ── SCAN PDF ──────────────────────────────────────────────────────────
+function openScanPDF(){
+  const name=v('cover-name')||'Body Bloom';
+  const now=new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('scan-modal-meta').textContent=`${name}  ·  ${now}`;
+  setSum('sum-scan-msg', v('scan-msg'));
+  // collect tension bars
+  const bars=document.querySelectorAll('.tension-bar');
+  const labels=document.querySelectorAll('.scan-card-label');
+  const zones=[];
+  bars.forEach((bar,i)=>{
+    const pct=parseInt(bar.querySelector('.tension-fill').style.width||'0');
+    if(pct>0) zones.push(`${labels[i]?labels[i].textContent:'Zone'}: ${pct}%`);
+  });
+  setSum('sum-scan-zones', zones.length?zones.join(' · '):'Geen spanningsscore ingevuld');
+  // active zone
+  const activeZone=document.querySelector('.body-zone.active');
+  setSum('sum-scan-zone', activeZone?activeZone.getAttribute('data-title'):'—');
+  document.getElementById('scan-modal').classList.add('open');
+}
+
+// ── INFRAROOD PDF ─────────────────────────────────────────────────────
+function openIrPDF(){
+  const name=v('cover-name')||'Body Bloom';
+  const now=new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('ir-modal-meta').textContent=`${name}  ·  ${now}`;
+  const selectedTemp=document.querySelector('.temp-btn.selected');
+  setSum('sum-ir-temp', selectedTemp?selectedTemp.textContent:'Niet geselecteerd');
+  const durVal=document.getElementById('dur-val');
+  setSum('sum-ir-dur', durVal?(durVal.textContent+' minuten'):'—');
+  const benefits=[...document.querySelectorAll('.benefit-card.selected')].map(b=>b.querySelector('.benefit-name').textContent);
+  setSum('sum-ir-benefits', benefits.length?benefits.join(' · '):'Geen selectie');
+  setSum('sum-ir-note', v('ir-note'));
+  const total=[...irSessions].filter(k=>k.startsWith(String(calYear))).length;
+  setSum('sum-ir-total', `${total} sessie${total!==1?'s':''} in ${calYear}`);
+  document.getElementById('ir-modal').classList.add('open');
+}
+
+
+const irTips=["Infrarood warmte dringt 4 tot 5 cm diep in het weefsel en activeert de microcirculatie.","Een sessie van 30 min bij 37 tot 39°C werkt diep op het bindweefsel, zonder overbelasting van het lichaam.","Regelmatig infrarood gebruik ondersteunt de aanmaak van collageen voor huid en elasticiteit.","Infraroodlicht stimuleert stikstofoxide, wat bloedvaten ontspant en doorbloeding verbetert.","Een sessie voor het slapengaan verlaagt je kerntemperatuur daarna, wat slaapkwaliteit verbetert.","Infrarood ondersteunt het lymfestelsel bij de afvoer van afvalstoffen.","Zweten in infrarood is dieper dan in een traditionele sauna, bij aangenamere lucht."];
+document.getElementById('ir-tip').textContent=irTips[Math.floor(Math.random()*irTips.length)];
+document.getElementById('ir-date-label').textContent='Datum: '+new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+// ── INIT ──────────────────────────────────────────────────────────────
+calMonth=new Date().getMonth();
+calYear=Math.max(2026,new Date().getFullYear());
+loadSaved();
+renderCalendar();
+buildGratitudeLog();
+buildStreakDots();
+</script>
+</body>
+</html>
