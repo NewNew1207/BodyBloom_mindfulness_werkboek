@@ -45,15 +45,19 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
 .pw-m7{width:7px;height:7px;opacity:0.35;}
 .pw-title{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--rose-deep);font-style:italic;margin-bottom:4px;}
 .pw-sub{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:2rem;}
-.pw-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:8px;}
+.pw-label{font-size:12px;letter-spacing:0.03em;text-transform:none;color:var(--warm-gray);margin-bottom:14px;font-family:'Jost',sans-serif;line-height:1.7;}
 .pw-input{
-  border:none;border-bottom:1.5px solid var(--rose-light);
-  background:transparent;text-align:center;
-  font-family:'Jost',sans-serif;font-size:18px;font-weight:500;
-  color:var(--rose-deep);width:220px;padding:8px 4px;
-  outline:none;letter-spacing:0.18em;
+  border:1.5px solid #E8C4C0;
+  border-radius:14px;
+  background:#FDF0EE;
+  text-align:center;
+  font-family:'Jost',sans-serif;font-size:13px;font-weight:400;
+  color:var(--rose-deep);width:250px;padding:14px 18px;
+  outline:none;letter-spacing:0.10em;
+  box-shadow:0 2px 10px rgba(201,144,138,0.12);
 }
-.pw-input:focus{border-bottom-color:var(--rose);}
+.pw-input::placeholder{color:#CFA8A4;font-size:12px;letter-spacing:0.06em;}
+.pw-input:focus{border-color:var(--rose);background:#FEF5F3;}
 .pw-btn{
   display:block;margin:1.5rem auto 0;
   padding:11px 32px;background:var(--rose);border:none;border-radius:24px;
@@ -67,8 +71,8 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
 }
 .pw-error.show{opacity:1;}
 .pw-quote{
-  font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;
-  color:var(--rose-light);margin-top:2.5rem;max-width:280px;line-height:1.6;
+  font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;
+  color:var(--rose-light);margin-top:2.5rem;max-width:280px;line-height:1.7;
 }
 .pw-copy{font-size:10px;color:var(--rose-light);margin-top:0.75rem;letter-spacing:0.06em;}
 
@@ -322,8 +326,8 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
   </div>
   <h1 class="pw-title">Body Bloom</h1>
   <p class="pw-sub">Mindfulness Werkboek</p>
-  <p class="pw-label">Jouw toegangscode</p>
-  <input class="pw-input" id="pw-input" type="text" placeholder=""
+  <p class="pw-label">Voer jouw persoonlijke toegangscode in om de app te starten. 🌸</p>
+  <input class="pw-input" id="pw-input" type="text" placeholder="JOUW CODE (BV. BB-X7K2-2026)"
     autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
     oninput="this.value=this.value.toUpperCase()"
     onkeydown="if(event.key==='Enter')checkPw()">
