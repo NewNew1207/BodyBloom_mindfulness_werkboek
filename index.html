@@ -26,6 +26,52 @@
 html,body{height:100%;overflow:hidden;}
 body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);display:flex;flex-direction:column;}
 
+/* PASSWORD SCREEN */
+.pw-screen{
+  position:fixed;inset:0;z-index:999;
+  background:var(--rose-pale);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:2rem;text-align:center;
+}
+.pw-screen.hidden{display:none;}
+.pw-moon-stack{display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:1.5rem;}
+.pw-moon{background:var(--moon);border-radius:50%;}
+.pw-m1{width:7px;height:7px;opacity:0.35;}
+.pw-m2{width:16px;height:8px;border-radius:8px 8px 0 0;transform:rotate(180deg);opacity:0.45;}
+.pw-m3{width:26px;height:13px;border-radius:13px 13px 0 0;transform:rotate(180deg);opacity:0.6;}
+.pw-m4{width:36px;height:36px;opacity:0.82;}
+.pw-m5{width:26px;height:13px;border-radius:13px 13px 0 0;opacity:0.6;}
+.pw-m6{width:16px;height:8px;border-radius:8px 8px 0 0;opacity:0.45;}
+.pw-m7{width:7px;height:7px;opacity:0.35;}
+.pw-title{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--rose-deep);font-style:italic;margin-bottom:4px;}
+.pw-sub{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:2rem;}
+.pw-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:8px;}
+.pw-input{
+  border:none;border-bottom:1.5px solid var(--rose-light);
+  background:transparent;text-align:center;
+  font-family:'Jost',sans-serif;font-size:18px;font-weight:500;
+  color:var(--rose-deep);width:220px;padding:8px 4px;
+  outline:none;letter-spacing:0.18em;
+}
+.pw-input:focus{border-bottom-color:var(--rose);}
+.pw-btn{
+  display:block;margin:1.5rem auto 0;
+  padding:11px 32px;background:var(--rose);border:none;border-radius:24px;
+  font-family:'Jost',sans-serif;font-size:12px;letter-spacing:0.12em;
+  text-transform:uppercase;color:#fff;cursor:pointer;transition:all 0.2s;
+}
+.pw-btn:active{transform:scale(0.97);}
+.pw-error{
+  font-size:12px;color:var(--infrared);margin-top:12px;
+  opacity:0;transition:opacity 0.3s;height:18px;
+}
+.pw-error.show{opacity:1;}
+.pw-quote{
+  font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;
+  color:var(--rose-light);margin-top:2.5rem;max-width:280px;line-height:1.6;
+}
+.pw-copy{font-size:10px;color:var(--rose-light);margin-top:0.75rem;letter-spacing:0.06em;}
+
 /* INSTALL BANNER */
 .install-banner{
   background:var(--rose-deep);color:#fff;
@@ -251,6 +297,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
 .site-footer{text-align:center;padding:1.25rem 1rem;border-top:1px solid var(--rose-pale);background:#fff;margin-top:1.5rem;}
 .site-footer p{font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;color:var(--rose-light);}
 .copy-line{font-size:10px;color:var(--warm-gray);margin-top:3px;font-style:normal;font-family:'Jost',sans-serif;}
+.buy-line{font-size:11px;color:var(--rose);margin-top:6px;font-style:normal;font-family:'Jost',sans-serif;letter-spacing:0.04em;}
 
 @media(min-width:600px){
   .workbook-page{padding:2rem 2rem 6rem;}
@@ -264,6 +311,28 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
 </style>
 </head>
 <body>
+
+<!-- PASSWORD SCREEN -->
+<div class="pw-screen" id="pw-screen">
+  <div class="pw-moon-stack">
+    <div class="pw-moon pw-m1"></div><div class="pw-moon pw-m2"></div>
+    <div class="pw-moon pw-m3"></div><div class="pw-moon pw-m4"></div>
+    <div class="pw-moon pw-m5"></div><div class="pw-moon pw-m6"></div>
+    <div class="pw-moon pw-m7"></div>
+  </div>
+  <h1 class="pw-title">Body Bloom</h1>
+  <p class="pw-sub">Mindfulness Werkboek</p>
+  <p class="pw-label">Jouw toegangscode</p>
+  <input class="pw-input" id="pw-input" type="text" placeholder=""
+    autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
+    oninput="this.value=this.value.toUpperCase()"
+    onkeydown="if(event.key==='Enter')checkPw()">
+  <button class="pw-btn" onclick="checkPw()">Open mijn werkboek</button>
+  <p class="pw-error" id="pw-error">Onjuiste code. Probeer opnieuw.</p>
+  <p class="pw-quote">"Jouw lichaam weet de weg. Vertrouw het. Voel het. Bloei."</p>
+  <p class="pw-copy">© 2026 Body Bloom</p>
+  <p style="font-size:11px;color:var(--rose);margin-top:10px;font-family:'Jost',sans-serif;letter-spacing:0.04em;">€ 14,99 ♡ Te koop via DM op Instagram</p>
+</div>
 
 <!-- INSTALL BANNER -->
 <div class="install-banner hidden" id="install-banner">
@@ -304,7 +373,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <input class="name-input" id="cover-name" type="text" placeholder="schrijf hier jouw naam..." autocomplete="off" oninput="autosave()">
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- OCHTEND -->
@@ -343,7 +412,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <button class="save-btn dark" onclick="openDayPDF()">Dag PDF ↗</button>
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- BODY SCAN -->
@@ -379,7 +448,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <button class="save-btn dark" onclick="openScanPDF()">Scan PDF ↗</button>
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- DANKBAARHEID -->
@@ -403,7 +472,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
       </div>
       <button class="save-btn" onclick="saveDay();flashSave()" style="margin-top:1.25rem;">Opslaan ✦</button>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- INFRAROOD -->
@@ -458,7 +527,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <button class="save-btn dark" onclick="openIrPDF()">Sessie PDF ↗</button>
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Infrarood Coaching ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Infrarood Coaching ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- AVOND -->
@@ -487,7 +556,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <button class="save-btn dark" onclick="openDayPDF()">Dag PDF ↗</button>
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- IKIGAI -->
@@ -529,7 +598,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <button class="save-btn dark" onclick="openDayPDF()">Dag PDF ↗</button>
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- WEEK -->
@@ -552,7 +621,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <button class="save-btn dark" onclick="openWeekPDF()">Week PDF ↗</button>
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
 </div><!-- end app-body -->
@@ -653,6 +722,40 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
 </div>
 
 <script>
+// ── PASSWORD ──────────────────────────────────────────────────────────
+// Formaat: BB-NAAM-2026 — verander naar jouw klant
+const BB_PASSWORD = 'BB-SOFIA-2026';
+const PW_KEY = 'bb-unlocked';
+
+function checkPw(){
+  const input = document.getElementById('pw-input').value.trim();
+  const err = document.getElementById('pw-error');
+  if(input === BB_PASSWORD){
+    // Sla unlock op voor 30 dagen
+    const expires = Date.now() + 30 * 24 * 60 * 60 * 1000;
+    localStorage.setItem(PW_KEY, String(expires));
+    document.getElementById('pw-screen').classList.add('hidden');
+    loadSaved();
+    renderCalendar();
+    buildGratitudeLog();
+    buildStreakDots();
+  } else {
+    err.classList.add('show');
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+    setTimeout(() => err.classList.remove('show'), 3000);
+  }
+}
+
+function checkUnlocked(){
+  const stored = localStorage.getItem(PW_KEY);
+  if(stored && parseInt(stored) > Date.now()){
+    document.getElementById('pw-screen').classList.add('hidden');
+    return true;
+  }
+  return false;
+}
+
 // ── SERVICE WORKER ────────────────────────────────────────────────────
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/BodyBloom_mindfulness_werkboek/sw.js').catch(()=>{});
@@ -1120,10 +1223,15 @@ document.getElementById('ir-date-label').textContent='Datum: '+new Date().toLoca
 // ── INIT ──────────────────────────────────────────────────────────────
 calMonth=new Date().getMonth();
 calYear=Math.max(2026,new Date().getFullYear());
-loadSaved();
-renderCalendar();
-buildGratitudeLog();
-buildStreakDots();
+
+// Controleer of gebruiker al unlocked is, anders wachtwoordscherm tonen
+if(checkUnlocked()){
+  loadSaved();
+  renderCalendar();
+  buildGratitudeLog();
+  buildStreakDots();
+}
+// Anders wacht op checkPw() die dit doet na correct wachtwoord
 </script>
 </body>
 </html>
