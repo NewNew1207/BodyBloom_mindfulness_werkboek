@@ -26,7 +26,20 @@
 html,body{height:100%;overflow:hidden;}
 body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);display:flex;flex-direction:column;}
 
-/* PASSWORD SCREEN */
+/* WELCOME FLASH */
+.welcome-screen{
+  position:fixed;inset:0;z-index:998;
+  background:var(--rose);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:2rem;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.4s ease;
+}
+.welcome-screen.show{opacity:1;pointer-events:all;}
+.welcome-screen.fade{opacity:0;}
+.welcome-icon{font-size:48px;margin-bottom:1rem;}
+.welcome-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;color:#fff;margin-bottom:0.5rem;}
+.welcome-sub{font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);}
 .pw-screen{
   position:fixed;inset:0;z-index:999;
   background:var(--rose-pale);
@@ -331,7 +344,14 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
   <p class="pw-error" id="pw-error">Onjuiste code. Probeer opnieuw.</p>
   <p class="pw-quote">"Jouw lichaam weet de weg. Vertrouw het. Voel het. Bloei."</p>
   <p class="pw-copy">© 2026 Body Bloom</p>
-  <p style="font-size:11px;color:var(--rose);margin-top:10px;font-family:'Jost',sans-serif;letter-spacing:0.04em;">€ 14,99 ♡ Te koop via DM op Instagram</p>
+  <p style="font-size:11px;color:var(--rose);margin-top:10px;font-family:'Jost',sans-serif;letter-spacing:0.04em;">€ 14,99 / jaar ♡ Te koop via DM op Instagram</p>
+</div>
+
+<!-- WELCOME SCREEN -->
+<div class="welcome-screen" id="welcome-screen">
+  <div class="welcome-icon">🌸</div>
+  <h2 class="welcome-title">Welkom</h2>
+  <p class="welcome-sub">Jouw werkboek is klaar</p>
 </div>
 
 <!-- INSTALL BANNER -->
@@ -373,7 +393,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <input class="name-input" id="cover-name" type="text" placeholder="schrijf hier jouw naam..." autocomplete="off" oninput="autosave()">
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden · <span onclick="showPage('disclaimer',null)" style="color:var(--rose);cursor:pointer;">Disclaimer</span></p><p class="buy-line">€ 14,99 / jaar ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- OCHTEND -->
@@ -412,7 +432,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <button class="save-btn dark" onclick="openDayPDF()">Dag PDF ↗</button>
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden · <span onclick="showPage('disclaimer',null)" style="color:var(--rose);cursor:pointer;">Disclaimer</span></p><p class="buy-line">€ 14,99 / jaar ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- BODY SCAN -->
@@ -448,7 +468,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <button class="save-btn dark" onclick="openScanPDF()">Scan PDF ↗</button>
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden · <span onclick="showPage('disclaimer',null)" style="color:var(--rose);cursor:pointer;">Disclaimer</span></p><p class="buy-line">€ 14,99 / jaar ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- DANKBAARHEID -->
@@ -472,7 +492,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
       </div>
       <button class="save-btn" onclick="saveDay();flashSave()" style="margin-top:1.25rem;">Opslaan ✦</button>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden · <span onclick="showPage('disclaimer',null)" style="color:var(--rose);cursor:pointer;">Disclaimer</span></p><p class="buy-line">€ 14,99 / jaar ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- INFRAROOD -->
@@ -527,7 +547,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <button class="save-btn dark" onclick="openIrPDF()">Sessie PDF ↗</button>
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Infrarood Coaching ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Infrarood Coaching ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden · <span onclick="showPage('disclaimer',null)" style="color:var(--rose);cursor:pointer;">Disclaimer</span></p><p class="buy-line">€ 14,99 / jaar ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- AVOND -->
@@ -556,7 +576,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <button class="save-btn dark" onclick="openDayPDF()">Dag PDF ↗</button>
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden · <span onclick="showPage('disclaimer',null)" style="color:var(--rose);cursor:pointer;">Disclaimer</span></p><p class="buy-line">€ 14,99 / jaar ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- IKIGAI -->
@@ -598,7 +618,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <button class="save-btn dark" onclick="openDayPDF()">Dag PDF ↗</button>
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden · <span onclick="showPage('disclaimer',null)" style="color:var(--rose);cursor:pointer;">Disclaimer</span></p><p class="buy-line">€ 14,99 / jaar ♡ Te koop via DM op Instagram</p></footer>
   </div>
 
   <!-- WEEK -->
@@ -621,7 +641,48 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
         <button class="save-btn dark" onclick="openWeekPDF()">Week PDF ↗</button>
       </div>
     </div>
-    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden</p><p class="buy-line">€ 14,99 ♡ Te koop via DM op Instagram</p></footer>
+    <footer class="site-footer"><p>Body Bloom ♡ Much love &amp; bliss</p><p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden · <span onclick="showPage('disclaimer',null)" style="color:var(--rose);cursor:pointer;">Disclaimer</span></p><p class="buy-line">€ 14,99 / jaar ♡ Te koop via DM op Instagram</p></footer>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div id="disclaimer" class="page">
+    <div class="workbook-page">
+      <div class="page-header">
+        <span class="page-tag">Gebruiksvoorwaarden</span>
+        <h2 class="page-title">Disclaimer</h2>
+      </div>
+      <p style="font-size:11px;color:var(--warm-gray);margin-bottom:1.25rem;font-style:italic;">Versie 1.0 · Geldig vanaf 1 januari 2026</p>
+
+      <div class="section-label">1. Geen medisch advies</div>
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:1rem;">De Body Bloom app is uitsluitend bedoeld als persoonlijk welzijns- en reflectietool. De inhoud vormt geen medisch, psychologisch of therapeutisch advies en is geen vervanging voor professionele zorgverlening. Raadpleeg bij klachten steeds een erkend zorgprofessional.</p>
+
+      <div class="section-label">2. Infrarood coaching</div>
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:1rem;">De infrarood sessies worden aangeboden als coaching en ontspanningsondersteuning, geen medische behandeling. Resultaten kunnen variëren per persoon. Personen met bepaalde medische aandoeningen dienen hun arts te raadplegen alvorens infrarood sessies te volgen.</p>
+
+      <div class="section-label">3. Persoonlijke verantwoordelijkheid</div>
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:1rem;">De gebruiker is zelf verantwoordelijk voor het gebruik van de app en de toepassing van de inhoud. Body Bloom aanvaardt geen aansprakelijkheid voor directe of indirecte schade voortvloeiend uit het gebruik.</p>
+
+      <div class="section-label">4. Privacy</div>
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:1rem;">Alle persoonlijke data wordt uitsluitend lokaal opgeslagen op het eigen toestel van de gebruiker. Body Bloom heeft geen toegang tot de ingevulde gegevens. De gebruiker is zelf verantwoordelijk voor het back-uppen van de eigen data.</p>
+
+      <div class="section-label">5. Digitaal product — geen terugbetaling</div>
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:1rem;">Na levering van de persoonlijke toegangscode is terugbetaling niet mogelijk. De toegangscode is strikt persoonlijk en mag niet worden gedeeld, overgedragen of doorverkocht aan derden.</p>
+
+      <div class="section-label">6. Geldigheid en verlenging</div>
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:1rem;">De toegangscode is geldig voor één jaar vanaf de datum van aankoop. Na het verstrijken van deze periode kan je verlengen via DM op Instagram voor € 14,99 / jaar.</p>
+
+      <div class="section-label">7. Intellectueel eigendom</div>
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:1rem;">Alle inhoud van de Body Bloom app en de bijhorende documenten is eigendom van Body Bloom en beschermd door het auteursrecht. Reproductie of verspreiding zonder schriftelijke toestemming is niet toegestaan.</p>
+
+      <div class="section-label">8. Toepasselijk recht</div>
+      <p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:1.5rem;">Deze disclaimer is onderworpen aan het Belgisch recht. Bij geschillen is uitsluitend de rechtbank van de woonplaats van Body Bloom bevoegd.</p>
+
+    </div>
+    <footer class="site-footer">
+      <p>Body Bloom ♡ Much love &amp; bliss</p>
+      <p class="copy-line">© 2026 Body Bloom — Alle rechten voorbehouden · <span onclick="showPage('disclaimer',null)" style="color:var(--rose);cursor:pointer;">Disclaimer</span></p>
+      <p class="buy-line">€ 14,99 / jaar ♡ Te koop via DM op Instagram</p>
+    </footer>
   </div>
 
 </div><!-- end app-body -->
@@ -728,8 +789,8 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
 const BB_CODES = [
   'BB-SOFIA-ADMIN',   // Sofia — admin
   // Voeg klantcodes toe hieronder:
-  // 'BB-FABRICE-2026',  // Fabrice K.
-  // 'BB-PRESSY-2026',  // Preston K.
+  // 'BB-LISA-2026',  // Lisa
+  // 'BB-JANA-2026',  // Jana
 ];
 const PW_KEY = 'bb-unlocked';
 
@@ -737,13 +798,24 @@ function checkPw(){
   const input = document.getElementById('pw-input').value.trim();
   const err = document.getElementById('pw-error');
   if(BB_CODES.includes(input)){
-    const expires = Date.now() + 30 * 24 * 60 * 60 * 1000;
+    const expires = Date.now() + 365 * 24 * 60 * 60 * 1000;
     localStorage.setItem(PW_KEY, String(expires));
+    // Verberg wachtwoordscherm
     document.getElementById('pw-screen').classList.add('hidden');
-    loadSaved();
-    renderCalendar();
-    buildGratitudeLog();
-    buildStreakDots();
+    // Toon welkomstscherm
+    const ws = document.getElementById('welcome-screen');
+    ws.classList.add('show');
+    // Na 1.8 seconden fade out en start app
+    setTimeout(() => {
+      ws.classList.add('fade');
+      setTimeout(() => {
+        ws.classList.remove('show','fade');
+        loadSaved();
+        renderCalendar();
+        buildGratitudeLog();
+        buildStreakDots();
+      }, 400);
+    }, 1800);
   } else {
     err.classList.add('show');
     document.getElementById('pw-input').value = '';
@@ -800,7 +872,7 @@ if(isIOS&&!isStandalone&&!localStorage.getItem('bb-install-dismissed')){
 }
 
 // ── PAGES ─────────────────────────────────────────────────────────────
-const PAGES=['cover','morning','bodyscan','gratitude','infrared','evening','ikigai','week'];
+const PAGES=['cover','morning','bodyscan','gratitude','infrared','evening','ikigai','week','disclaimer'];
 function showPage(id,btn){
   PAGES.forEach(p=>document.getElementById(p).classList.remove('active'));
   document.getElementById(id).classList.add('active');
