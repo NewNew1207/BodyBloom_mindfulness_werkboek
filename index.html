@@ -58,15 +58,24 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
 .pw-m7{width:7px;height:7px;opacity:0.35;}
 .pw-title{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--rose-deep);font-style:italic;margin-bottom:4px;}
 .pw-sub{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:2rem;}
-.pw-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:8px;}
 .pw-input{
-  border:none;border-bottom:1.5px solid var(--rose-light);
-  background:transparent;text-align:center;
-  font-family:'Jost',sans-serif;font-size:18px;font-weight:500;
-  color:var(--rose-deep);width:220px;padding:8px 4px;
+  border:1.5px solid var(--rose-light);
+  border-radius:30px;
+  background:#fff;
+  text-align:center;
+  font-family:'Jost',sans-serif;font-size:13px;font-weight:400;
+  color:var(--rose-deep);width:240px;padding:12px 20px;
   outline:none;letter-spacing:0.18em;
+  box-shadow:none;
+  -webkit-appearance:none;
 }
-.pw-input:focus{border-bottom-color:var(--rose);}
+.pw-input:focus{border-color:var(--rose);}
+.pw-input::placeholder{
+  color:var(--rose-light);
+  font-size:11px;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+}
 .pw-btn{
   display:block;margin:1.5rem auto 0;
   padding:11px 32px;background:var(--rose);border:none;border-radius:24px;
@@ -84,6 +93,10 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
   color:var(--rose-light);margin-top:2.5rem;max-width:280px;line-height:1.6;
 }
 .pw-copy{font-size:10px;color:var(--rose-light);margin-top:0.75rem;letter-spacing:0.06em;}
+.pw-footer{margin-top:1.25rem;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.pw-exclusief{font-size:10px;letter-spacing:0.1em;color:var(--warm-gray);}
+.pw-ig{font-size:11px;color:var(--rose);letter-spacing:0.04em;text-decoration:none;}
+.pw-ig:hover{color:var(--rose-deep);}
 
 /* INSTALL BANNER */
 .install-banner{
@@ -335,16 +348,18 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);dis
   </div>
   <h1 class="pw-title">Body Bloom</h1>
   <p class="pw-sub">Mindfulness Werkboek</p>
-  <p class="pw-label">Jouw toegangscode</p>
-  <input class="pw-input" id="pw-input" type="text" placeholder=""
+  <input class="pw-input" id="pw-input" type="text" placeholder="JOUW TOEGANGSCODE"
     autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
     oninput="this.value=this.value.toUpperCase()"
     onkeydown="if(event.key==='Enter')checkPw()">
   <button class="pw-btn" onclick="checkPw()">Open mijn werkboek</button>
   <p class="pw-error" id="pw-error">Onjuiste code. Probeer opnieuw.</p>
   <p class="pw-quote">"Jouw lichaam weet de weg. Vertrouw het. Voel het. Bloei."</p>
-  <p class="pw-copy">© 2026 Body Bloom</p>
-  <p style="font-size:11px;color:var(--rose);margin-top:10px;font-family:'Jost',sans-serif;letter-spacing:0.04em;">€ 14,99 / jaar ♡ Te koop via DM op Instagram</p>
+  <div class="pw-footer">
+    <p class="pw-exclusief">Exclusief voor Body&bull;Bloom klanten &middot; <span onclick="showPage('disclaimer',null)" style="cursor:pointer;color:var(--rose);">Disclaimer</span></p>
+    <a class="pw-ig" href="https://www.instagram.com/body_bloom_be" target="_blank">Volg mij op Instagram &rarr; @body_bloom_be</a>
+    <p class="pw-copy">© 2026 Body Bloom</p>
+  </div>
 </div>
 
 <!-- WELCOME SCREEN -->
